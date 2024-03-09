@@ -14,7 +14,9 @@ public class SpaceshipGame extends ApplicationAdapter {
 	Texture img;
         Texture imgBullet;
         Texture imgCreature;
+        Texture imgBarricadeSection;
         Ship ship;
+        BarricadeSection[] barricadeSection;
         Creature[] creatures;
         BitmapFont font;
         
@@ -46,7 +48,9 @@ public class SpaceshipGame extends ApplicationAdapter {
 		img = new Texture("spaceship.png");
                 imgBullet = new Texture("spacebullet.png");
                 imgCreature = new Texture("spacecreature.png");
+                imgBarricadeSection = new Texture("spacebarricadesection.png");
                 ship = new Ship(img, imgBullet);
+                //barricadeSection = new BarricadeSection(numCoordinatesBarricadeSection, imgBarricadeSection);
                 creatures = new Creature[numWidthCreatures * numHeightCreatures];
                 font = new BitmapFont();
                 
@@ -78,6 +82,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                 font.getData().setScale(1.5f);
                 font.draw(batch, "Score: " + score, scoreBoardX, scoreBoardY);
 		ship.Draw(batch);
+                //barricadeSection.Draw(batch);
                 
                 // Loop with conditional statements that determine whether bullet intersects creature, killing it afterwards . . .
                 for (int count = 0; count < creatures.length; count++)
