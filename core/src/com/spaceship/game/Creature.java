@@ -10,7 +10,7 @@ public class Creature {
     public Vector2 position;
     public Vector2 positionInitial;
     public Sprite sprite;
-    public boolean alive = true;
+    public boolean isAlive = true;
     
     public Creature(Vector2 pos, Texture img)
     {

@@ -16,7 +16,7 @@ public class SpaceshipGame extends ApplicationAdapter {
         Texture imgCreature;
         Texture imgBarricadeSection;
         Ship ship;
-        BarricadeSection[] barricadeSection;
+        BarricadeSection[] barricadeSections;
         Creature[] creatures;
         BitmapFont font;
         
@@ -48,13 +48,11 @@ public class SpaceshipGame extends ApplicationAdapter {
 		img = new Texture("spaceship.png");
                 imgBullet = new Texture("spacebullet.png");
                 imgCreature = new Texture("spacecreature.png");
-                imgBarricadeSection = new Texture("spacebarricadesection.png");
                 ship = new Ship(img, imgBullet);
-                //barricadeSection = new BarricadeSection(numCoordinatesBarricadeSection, imgBarricadeSection);
                 creatures = new Creature[numWidthCreatures * numHeightCreatures];
                 font = new BitmapFont();
                 
-                int index = 0;
+                int indexCreature = 0;
                 
                 for (int y = 0; y < numHeightCreatures; y++)
                 {
@@ -65,8 +63,8 @@ public class SpaceshipGame extends ApplicationAdapter {
                         position.y += Gdx.graphics.getHeight();
                         position.x -= (numWidthCreatures/2) * spacingCreatures;
                         position.y -= (numHeightCreatures) * spacingCreatures;
-                        creatures[index] = new Creature(position, imgCreature);
-                        index++;
+                        creatures[indexCreature] = new Creature(position, imgCreature);
+                        indexCreature++;
                     }
                 }
 	}
@@ -87,12 +85,12 @@ public class SpaceshipGame extends ApplicationAdapter {
                 // Loop with conditional statements that determine whether bullet intersects creature, killing it afterwards . . .
                 for (int count = 0; count < creatures.length; count++)
                 {
-                    if (creatures[count].alive)
+                    if (creatures[count].isAlive)
                     {
                         if (ship.spriteBullet.getBoundingRectangle().overlaps(creatures[count].sprite.getBoundingRectangle()))
                         {
                             ship.positionBullet.y = 10000;
-                            creatures[count].alive = false;
+                            creatures[count].isAlive = false;
                             score++;
                             break;
                         }
@@ -108,7 +106,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                 
                 for (int count = 0; count < creatures.length; count++)
                 {
-                    if (creatures[count].alive)
+                    if (creatures[count].isAlive)
                     {
                         int indexX = count % numWidthCreatures;
                         int indexY = count / numWidthCreatures;
@@ -143,7 +141,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                 {
                     for (int count = 0; count < creatures.length; count++)
                     {
-                        creatures[count].alive = true;
+                        creatures[count].isAlive = true;
                     }
                     offsetCreatures = new Vector2(0, 0);
                     batch.end();
@@ -179,7 +177,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                     creatures[count].position = new Vector2(creatures[count].positionInitial.x + 
                             offsetCreatures.x, creatures[count].positionInitial.y + offsetCreatures.y);
                     
-                    if (creatures[count].alive)
+                    if (creatures[count].isAlive)
                     {
                         creatures[count].Draw(batch);
                         
