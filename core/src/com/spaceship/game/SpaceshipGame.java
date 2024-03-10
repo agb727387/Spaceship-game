@@ -16,7 +16,9 @@ public class SpaceshipGame extends ApplicationAdapter {
         Texture imgCreature;
         Texture imgBarricadeSection;
         Ship ship;
-        BarricadeSection[][] barricadeSections;
+        BarricadeSection[][] barricadeSectionsOne;
+        BarricadeSection[][] barricadeSectionsTwo;
+        BarricadeSection[][] barricadeSectionsThree;
         Creature[] creatures;
         BitmapFont font;
         
@@ -24,8 +26,8 @@ public class SpaceshipGame extends ApplicationAdapter {
         int numHeightCreatures = 5;
         int spacingCreatures = 41;
         
-        int numWidthBarricadeSections = 10;
-        int numHeightBarricadeSections = 5;
+        int numWidthBarricadeSections = 100;
+        int numHeightBarricadeSections = 45;
         
         // Variables to help move the aliens along the (x, y) axis . . .
         int minXCreatures;
@@ -38,7 +40,7 @@ public class SpaceshipGame extends ApplicationAdapter {
         int scoreBoardY = 30;
         
         int directionCreatures = 1;
-        float speedCreatures = 20; // Change speed of creatures . . .
+        float speedCreatures = 5; // Change speed of creatures . . .
         int score = 0; // Score to keep track of the number of creatures killed . . .
         
         // Offset to move the creatures . . .
@@ -55,15 +57,37 @@ public class SpaceshipGame extends ApplicationAdapter {
                 imgBarricadeSection = new Texture("spacebarricadesection.png");
                 ship = new Ship(img, imgBullet);
                 creatures = new Creature[numWidthCreatures * numHeightCreatures];
-                barricadeSections = new BarricadeSection[numHeightBarricadeSections][numWidthBarricadeSections];
+                barricadeSectionsOne = new BarricadeSection[numHeightBarricadeSections][numWidthBarricadeSections];
+                barricadeSectionsTwo = new BarricadeSection[numHeightBarricadeSections][numWidthBarricadeSections];
+                barricadeSectionsThree = new BarricadeSection[numHeightBarricadeSections][numWidthBarricadeSections];
                 
                 // Initialize barricade sections :)
                 for (int row = 0; row < numHeightBarricadeSections; row++)
                 {
                     for (int col = 0; col < numWidthBarricadeSections; col++)
                     {
-                        Vector2 position = new Vector2(col + 100, row + 100);
-                        barricadeSections[row][col] = new BarricadeSection(imgBarricadeSection, position);
+                        Vector2 position = new Vector2(col + 72, row + 100);
+                        barricadeSectionsOne[row][col] = new BarricadeSection(imgBarricadeSection, position);
+                    }
+                }
+                
+                // Second barricade . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        Vector2 position = new Vector2(col + 272, row + 100);
+                        barricadeSectionsTwo[row][col] = new BarricadeSection(imgBarricadeSection, position);
+                    }
+                }
+                
+                // Third barricade . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        Vector2 position = new Vector2(col + 472, row + 100);
+                        barricadeSectionsThree[row][col] = new BarricadeSection(imgBarricadeSection, position);
                     }
                 }
                 
@@ -115,13 +139,30 @@ public class SpaceshipGame extends ApplicationAdapter {
                     }
                 }
                 
-                
                 // Render barricade sections . . .
                 for (int row = 0; row < numHeightBarricadeSections; row++)
                 {
                     for (int col = 0; col < numWidthBarricadeSections; col++)
                     {
-                        barricadeSections[row][col].Draw(batch);
+                        barricadeSectionsOne[row][col].Draw(batch);
+                    }
+                }
+                
+                // Second barricade . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        barricadeSectionsTwo[row][col].Draw(batch);
+                    }
+                }
+                
+                // Third barricade . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        barricadeSectionsThree[row][col].Draw(batch);
                     }
                 }
                 
@@ -130,10 +171,36 @@ public class SpaceshipGame extends ApplicationAdapter {
                 {
                     for (int col = 0; col < numWidthBarricadeSections; col++)
                     {
-                        BarricadeSection section = barricadeSections[row][col];
-                        if (ship.spriteBullet.getBoundingRectangle().overlaps(barricadeSections[row][col].sprite.getBoundingRectangle())) 
+                        if (ship.spriteBullet.getBoundingRectangle().overlaps(barricadeSectionsOne[row][col].sprite.getBoundingRectangle())) 
                         {
-                            barricadeSections[row][col].isDestroyed = true;
+                            ship.positionBullet.y = 10000;
+                            barricadeSectionsOne[row][col].isDestroyed = true;
+                        }
+                    }
+                }
+                
+                // Second barricade . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        if (ship.spriteBullet.getBoundingRectangle().overlaps(barricadeSectionsTwo[row][col].sprite.getBoundingRectangle())) 
+                        {
+                            ship.positionBullet.y = 10000;
+                            barricadeSectionsTwo[row][col].isDestroyed = true;
+                        }
+                    }
+                }
+                
+                // Third barricade . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        if (ship.spriteBullet.getBoundingRectangle().overlaps(barricadeSectionsThree[row][col].sprite.getBoundingRectangle())) 
+                        {
+                            ship.positionBullet.y = 10000;
+                            barricadeSectionsThree[row][col].isDestroyed = true;
                         }
                     }
                 }

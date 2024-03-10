@@ -15,6 +15,7 @@ public class BarricadeSection {
     {
         sprite = new Sprite(texture);
         sprite.setPosition(position.x, position.y);
+        sprite.setScale(3);
         isDestroyed = false;
     }
     
