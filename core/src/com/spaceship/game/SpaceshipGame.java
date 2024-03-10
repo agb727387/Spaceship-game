@@ -16,13 +16,16 @@ public class SpaceshipGame extends ApplicationAdapter {
         Texture imgCreature;
         Texture imgBarricadeSection;
         Ship ship;
-        BarricadeSection[] barricadeSections;
+        BarricadeSection[][] barricadeSections;
         Creature[] creatures;
         BitmapFont font;
         
         int numWidthCreatures = 10;
         int numHeightCreatures = 5;
         int spacingCreatures = 41;
+        
+        int numWidthBarricadeSections = 10;
+        int numHeightBarricadeSections = 5;
         
         // Variables to help move the aliens along the (x, y) axis . . .
         int minXCreatures;
@@ -41,6 +44,7 @@ public class SpaceshipGame extends ApplicationAdapter {
         // Offset to move the creatures . . .
         Vector2 offsetCreatures;
         
+        
 	@Override
 	public void create() {
                 offsetCreatures = Vector2.Zero;
@@ -48,9 +52,23 @@ public class SpaceshipGame extends ApplicationAdapter {
 		img = new Texture("spaceship.png");
                 imgBullet = new Texture("spacebullet.png");
                 imgCreature = new Texture("spacecreature.png");
+                imgBarricadeSection = new Texture("spacebarricadesection.png");
                 ship = new Ship(img, imgBullet);
                 creatures = new Creature[numWidthCreatures * numHeightCreatures];
+                barricadeSections = new BarricadeSection[numHeightBarricadeSections][numWidthBarricadeSections];
+                
+                // Initialize barricade sections :)
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        Vector2 position = new Vector2(col + 100, row + 100);
+                        barricadeSections[row][col] = new BarricadeSection(imgBarricadeSection, position);
+                    }
+                }
+                
                 font = new BitmapFont();
+                
                 
                 int indexCreature = 0;
                 
@@ -93,6 +111,29 @@ public class SpaceshipGame extends ApplicationAdapter {
                             creatures[count].isAlive = false;
                             score++;
                             break;
+                        }
+                    }
+                }
+                
+                
+                // Render barricade sections . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        barricadeSections[row][col].Draw(batch);
+                    }
+                }
+                
+                // Loop to destroy barricade section if bullet intersects with its position . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        BarricadeSection section = barricadeSections[row][col];
+                        if (ship.spriteBullet.getBoundingRectangle().overlaps(barricadeSections[row][col].sprite.getBoundingRectangle())) 
+                        {
+                            barricadeSections[row][col].isDestroyed = true;
                         }
                     }
                 }
@@ -165,7 +206,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                     speedCreatures += 10;
                 }
                 
-                // Conditional statement that terminate program if creatures reach bottom of screen . . .
+                // Conditional statement that terminates program if creatures reach bottom of screen . . .
                 if (creatures[minYCreatures].position.y <= 0)
                 {
                     Gdx.app.exit();

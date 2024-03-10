@@ -5,11 +5,29 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 
-/**
- *
- * @author andrewgarcia
- */
 public class BarricadeSection {
+    public Sprite sprite;
+    public boolean isDestroyed;
     
+    public BarricadeSection(Texture texture, Vector2 position)
+    {
+        sprite = new Sprite(texture);
+        sprite.setPosition(position.x, position.y);
+        isDestroyed = false;
+    }
+    
+    public void Draw(SpriteBatch batch) 
+    {
+        if(!isDestroyed)
+        {
+            sprite.draw(batch);
+        }
+    }
+    
+    public Rectangle getBounds()
+    {
+        return sprite.getBoundingRectangle();
+    }
 }
