@@ -18,6 +18,7 @@ public class BarricadeSection {
         sprite.setScale(3);
         isDestroyed = false;
         // Comment . . .
+        // Another comment . . .
     }
     
     public void Draw(SpriteBatch batch) 
