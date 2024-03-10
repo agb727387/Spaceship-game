@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.Color;
 
@@ -122,7 +123,6 @@ public class SpaceshipGame extends ApplicationAdapter {
                 font.getData().setScale(1.5f);
                 font.draw(batch, "Score: " + score, scoreBoardX, scoreBoardY);
 		ship.Draw(batch);
-                //barricadeSection.Draw(batch);
                 
                 // Loop with conditional statements that determine whether bullet intersects creature, killing it afterwards . . .
                 for (int count = 0; count < creatures.length; count++)
@@ -165,6 +165,88 @@ public class SpaceshipGame extends ApplicationAdapter {
                         barricadeSectionsThree[row][col].Draw(batch);
                     }
                 }
+                
+                // Conditional statement to check for collision detection between ship and barricade . . .
+//                for (int row = 0; row < numHeightBarricadeSections; row++)
+//                {
+//                    for (int col = 0; col < numWidthBarricadeSections; col++)
+//                    {
+//                        if (!barricadeSectionsOne[row][col].isDestroyed)
+//                        {
+//                            Rectangle barricadeBounds = barricadeSectionsOne[row][col].getBounds();
+//                            Rectangle shipBounds = ship.sprite.getBoundingRectangle();
+//                            
+//                            float dx = ship.position.x - barricadeBounds.x;
+//                            float dy = ship.position.y - barricadeBounds.y;
+//
+//                            if (Math.abs(dx) > Math.abs(dy)) 
+//                            {
+//                                // Horizontal collision
+//                                if (dx > 0) 
+//                                {
+//                                    // Ship was moving to the right
+//                                    ship.position.x = barricadeBounds.x + barricadeBounds.width;
+//                                } 
+//                                else 
+//                                {
+//                                    // Ship was moving to the left
+//                                    ship.position.x = barricadeBounds.x - ship.sprite.getWidth();
+//                                }
+//                            } 
+//                            else 
+//                            {
+//                                // Vertical collision
+//                                if (dy > 0) 
+//                                {
+//                                    // Ship was moving upwards
+//                                    ship.position.y = barricadeBounds.y + barricadeBounds.height;
+//                                } 
+//                                else 
+//                                {
+//                                    // Ship was moving downwards
+//                                    ship.position.y = barricadeBounds.y - ship.sprite.getHeight();
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+                
+                // Second barricade . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        if (!barricadeSectionsTwo[row][col].isDestroyed)
+                        {
+                            Rectangle barricadeBounds = barricadeSectionsTwo[row][col].getBounds();
+                            Rectangle shipBounds = ship.sprite.getBoundingRectangle();
+
+                            if (shipBounds.overlaps(barricadeBounds)) 
+                            {
+                                ship.position.set(barricadeBounds.x, barricadeBounds.y);
+                            }
+                        }
+                    }
+                }
+                
+                // Third barricade
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        if (!barricadeSectionsThree[row][col].isDestroyed)
+                        {
+                            Rectangle barricadeBounds = barricadeSectionsThree[row][col].getBounds();
+                            Rectangle shipBounds = ship.sprite.getBoundingRectangle();
+
+                            if (shipBounds.overlaps(barricadeBounds)) 
+                            {
+                                ship.position.set(barricadeBounds.x, barricadeBounds.y);
+                            }
+                        }
+                    }
+                }
+                
                 
                 // Loop to destroy barricade section if bullet intersects with its position . . .
                 for (int row = 0; row < numHeightBarricadeSections; row++)
