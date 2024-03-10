@@ -19,6 +19,7 @@ public class BarricadeSection {
         isDestroyed = false;
         // Comment . . .
         // Another comment . . .
+        // A third comment . . .
     }
     
     public void Draw(SpriteBatch batch) 
