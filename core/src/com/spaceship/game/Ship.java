@@ -84,6 +84,8 @@ public class Ship {
             position.x = Gdx.graphics.getWidth() - sprite.getWidth() * (sprite.getScaleX()/2);
         }
         
+        
+        
         positionBullet.y += deltaTime * speedBullet;
     }
     

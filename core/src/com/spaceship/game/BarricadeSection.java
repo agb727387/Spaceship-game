@@ -9,26 +9,21 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class BarricadeSection {
     public Sprite sprite;
-    public boolean isDestroyed;
+    public boolean isNotDestroyed;
     
-    public BarricadeSection(Texture texture, Vector2 position)
+    public BarricadeSection(Texture img, Vector2 position)
     {
-        sprite = new Sprite(texture);
+        sprite = new Sprite(img);
         sprite.setPosition(position.x, position.y);
-        sprite.setScale(3);
-        isDestroyed = false;
+        sprite.setScale(1);
+        isNotDestroyed = true;
     }
     
     public void Draw(SpriteBatch batch) 
     {
-        if(!isDestroyed)
+        if(isNotDestroyed)
         {
             sprite.draw(batch);
         }
-    }
-    
-    public Rectangle getBounds()
-    {
-        return sprite.getBoundingRectangle();
     }
 }
