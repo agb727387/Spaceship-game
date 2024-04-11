@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class SpaceshipGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -125,10 +126,21 @@ public class SpaceshipGame extends ApplicationAdapter {
                 float deltaTime = Gdx.graphics.getDeltaTime();
 		ScreenUtils.clear(0, 0, 0, 1);
 		batch.begin();
-                font.setColor(Color.ORANGE);
-                font.getData().setScale(1.5f);
-                font.draw(batch, "Score: " + score, scoreBoardX, scoreBoardY);
-                font.draw(batch, "Barricade destroyed: " + numBarricadeSectionsDestroyed, 390, 30);
+                
+                // Pixel art font style code . . .
+                FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("PixelEmulator-xq08.ttf"));
+                FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+                
+                parameter.size = 24; // Set font size . . .
+                parameter.color = Color.WHITE; // Set font color . . .
+                
+                font = generator.generateFont(parameter); // Generate the BitmapFont . . .
+                
+                generator.dispose();
+                
+                font.draw(batch, "Point: " + score, 10, 23); // Draw score board on bottom left side of screen . . .
+                
+                
 		ship.Draw(batch);
                 
                 // Loop with conditional statements that determine whether bullet intersects creature, killing it afterwards . . .
