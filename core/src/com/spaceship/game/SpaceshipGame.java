@@ -46,7 +46,6 @@ public class SpaceshipGame extends ApplicationAdapter {
         int directionCreatures = 1;
         float speedCreatures = 2; // Change speed of creatures . . .
         int score = 0; // Score to keep track of the number of creatures killed . . .
-        int numBarricadeSectionsDestroyed = 0;
         
         // Offset to move the creatures . . .
         Vector2 offsetCreatures;
@@ -113,7 +112,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                         position.y += Gdx.graphics.getHeight();
                         position.x -= (numWidthCreatures/2) * spacingCreatures;
                         position.y -= (numHeightCreatures) * spacingCreatures;
-                        creatures[indexCreature] = new Creature(position, imgCreature);
+                        creatures[indexCreature] = new Creature(position, imgCreature, imgBullet);
                         indexCreature++;
                     }
                 }
@@ -138,7 +137,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                 
                 generator.dispose();
                 
-                font.draw(batch, "Point: " + score, 10, 23); // Draw score board on bottom left side of screen . . .
+                font.draw(batch, "Point: " + score, scoreBoardX, scoreBoardY); // Draw score board on bottom left side of screen . . .
                 
                 
 		ship.Draw(batch);
@@ -185,7 +184,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                     }
                 }
                 
-                // Conditional statement that checks to see if bullet intersects with barricade section, destroying it afterwards if it does . . .
+                // Loop that checks to see if bullet intersects with barricade section, destroying it afterwards if it does . . .
                 for (int row = 0; row < numHeightBarricadeSections; row++)
                 {
                     for (int col = 0; col < numWidthBarricadeSections; col++)
@@ -197,7 +196,6 @@ public class SpaceshipGame extends ApplicationAdapter {
                                 ship.positionBullet.y = 10000;
                                 barricadeSectionsOne[row][col].sprite.setScale(barricadeSectionsOne[row][col].sprite.getScaleX(), barricadeSectionsOne[row][col].sprite.getScaleY());
                                 barricadeSectionsOne[row][col].isNotDestroyed = false;
-                                numBarricadeSectionsDestroyed++;
                                 break;
                             }
                         }
@@ -215,8 +213,70 @@ public class SpaceshipGame extends ApplicationAdapter {
                             {
                                 ship.positionBullet.y = 10000;
                                 barricadeSectionsTwo[row][col].isNotDestroyed = false;
-                                numBarricadeSectionsDestroyed++;
                                 break;
+                            }
+                        }
+                    }
+                }
+                
+                // Third barricade
+                for (int row = numHeightBarricadeSections - 1; row >= 0; row--)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        if (barricadeSectionsThree[row][col].isNotDestroyed)
+                        {
+                            if (ship.spriteBullet.getBoundingRectangle().overlaps(barricadeSectionsThree[row][col].sprite.getBoundingRectangle()))
+                            {
+                                ship.positionBullet.y = 10000;
+                                barricadeSectionsThree[row][col].isNotDestroyed = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // Check to see if creatures bullets hit barricades . . .
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        if (barricadeSectionsOne[row][col].isNotDestroyed)
+                        {
+                            for (Creature creature : creatures)
+                            {
+                                // Check if the creature is alive and its bullet overlaps with the barricade section
+                                if (creature.isAlive && creature.spriteBullet.getBoundingRectangle().overlaps(barricadeSectionsOne[row][col].sprite.getBoundingRectangle()))
+                                {
+                                    // Handle collision between the creature's bullet and the barricade section
+                                    creature.positionBullet.y = 10000;
+                                    barricadeSectionsOne[row][col].isNotDestroyed = false;
+                                    break; // Exit the inner loop since the barricade is destroyed
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                
+                // Second barricade
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                        if (barricadeSectionsTwo[row][col].isNotDestroyed)
+                        {
+                            for (Creature creature : creatures)
+                            {
+                                // Check if the creature is alive and its bullet overlaps with the barricade section
+                                if (creature.isAlive && creature.spriteBullet.getBoundingRectangle().overlaps(barricadeSectionsTwo[row][col].sprite.getBoundingRectangle()))
+                                {
+                                    // Handle collision between the creature's bullet and the barricade section
+                                    creature.positionBullet.y = 10000;
+                                    barricadeSectionsTwo[row][col].isNotDestroyed = false;
+                                    break; // Exit the inner loop since the barricade is destroyed
+                                }
                             }
                         }
                     }
@@ -229,19 +289,20 @@ public class SpaceshipGame extends ApplicationAdapter {
                     {
                         if (barricadeSectionsThree[row][col].isNotDestroyed)
                         {
-                            if (ship.spriteBullet.getBoundingRectangle().overlaps(barricadeSectionsThree[row][col].sprite.getBoundingRectangle()))
+                            for (Creature creature : creatures)
                             {
-                                ship.positionBullet.y = 10000;
-                                barricadeSectionsThree[row][col].isNotDestroyed = false;
-                                numBarricadeSectionsDestroyed++;
-                                break;
+                                // Check if the creature is alive and its bullet overlaps with the barricade section
+                                if (creature.isAlive && creature.spriteBullet.getBoundingRectangle().overlaps(barricadeSectionsThree[row][col].sprite.getBoundingRectangle()))
+                                {
+                                    // Handle collision between the creature's bullet and the barricade section
+                                    creature.positionBullet.y = 10000;
+                                    barricadeSectionsThree[row][col].isNotDestroyed = false;
+                                    break; // Exit the inner loop since the barricade is destroyed
+                                }
                             }
                         }
                     }
                 }
-                
-                
-
                 
                 minXCreatures = 10000;
                 minYCreatures = 0;
@@ -326,9 +387,19 @@ public class SpaceshipGame extends ApplicationAdapter {
                     if (creatures[count].isAlive)
                     {
                         creatures[count].Draw(batch);
+                        for (Creature creature : creatures)
+                        {
+                            creature.Update(Gdx.graphics.getDeltaTime()); // Pass delta time to update method
+                        }
                         
                         // Conditional statement that terminates program if a creature collides with the ship . . .
                         if (creatures[count].sprite.getBoundingRectangle().overlaps(ship.sprite.getBoundingRectangle()))
+                        {
+                            Gdx.app.exit();
+                        }
+                        
+                        // If creature bullet hits ship, then game ends . . .
+                        if (creatures[count].spriteBullet.getBoundingRectangle().overlaps(ship.sprite.getBoundingRectangle()))
                         {
                             Gdx.app.exit();
                         }

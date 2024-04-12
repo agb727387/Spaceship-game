@@ -9,7 +9,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
-		config.setTitle("This is SpaceshipGame . . .");
+		config.setTitle("SI CLONE  . . .");
 		new Lwjgl3Application(new SpaceshipGame(), config);
 	}
 }
