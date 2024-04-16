@@ -352,7 +352,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                     }
                     offsetCreatures = new Vector2(0, 0);
                     batch.end();
-                    speedCreatures = 50;
+                    speedCreatures = 30;
                     return;
                 }
                 
