@@ -26,8 +26,8 @@ public class SpaceshipGame extends ApplicationAdapter {
         Creature[] creatures;
         BitmapFont font;
         
-        int numWidthCreatures = 10;
-        int numHeightCreatures = 5;
+        int numWidthCreatures = 9;
+        int numHeightCreatures = 4;
         int spacingCreatures = 40;
         
         int numWidthBarricadeSections = 20;
@@ -44,7 +44,7 @@ public class SpaceshipGame extends ApplicationAdapter {
         int scoreBoardY = 30;
         
         int directionCreatures = 1;
-        float speedCreatures = 2; // Change speed of creatures . . .
+        float speedCreatures = 10; // Change speed of creatures . . .
         int score = 0; // Score to keep track of the number of creatures killed . . .
         
         // Offset to move the creatures . . .
@@ -352,7 +352,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                     }
                     offsetCreatures = new Vector2(0, 0);
                     batch.end();
-                    speedCreatures = 30;
+                    speedCreatures += 10;
                     return;
                 }
                 

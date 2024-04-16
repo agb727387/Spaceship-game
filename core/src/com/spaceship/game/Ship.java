@@ -63,9 +63,9 @@ public class Ship {
             position.y -= deltaTime * speed;
         }
         
-        if (position.y - (sprite.getWidth() * sprite.getScaleY()/2) <= 0)
+        if (position.y - (sprite.getWidth() * sprite.getScaleY()/2) <= 9)
         {
-            position.y = sprite.getWidth() * sprite.getScaleY()/2;
+            position.y = (sprite.getWidth() * sprite.getScaleY()/2) + 9;
         }
         
         if (position.y + (sprite.getWidth() * sprite.getScaleY()/2) >= Gdx.graphics.getHeight())
