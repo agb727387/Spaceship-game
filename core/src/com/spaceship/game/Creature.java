@@ -16,7 +16,7 @@ public class Creature {
     public Sprite spriteBullet;
     public boolean isAlive = true;
     public float speedBullet = 6f;
-    Random random = new Random(); // Random number generator . . .
+    public Random random = new Random(); // Random number generator . . .
     
     private float bulletTimer = 0; // Timer to track time since the last bullet was fired
     private float bulletDelay = 0; // Delay between each bullet firing (adjust as needed)

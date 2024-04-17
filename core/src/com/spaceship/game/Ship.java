@@ -63,6 +63,8 @@ public class Ship {
             position.y -= deltaTime * speed;
         }
         
+        
+        
         if (position.y - (sprite.getWidth() * sprite.getScaleY()/2) <= 9)
         {
             position.y = (sprite.getWidth() * sprite.getScaleY()/2) + 9;
@@ -83,8 +85,6 @@ public class Ship {
         {
             position.x = Gdx.graphics.getWidth() - sprite.getWidth() * (sprite.getScaleX()/2);
         }
-        
-        
         
         positionBullet.y += deltaTime * speedBullet;
     }
