@@ -130,7 +130,7 @@ public class SpaceshipGame extends ApplicationAdapter {
                 FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("PixelEmulator-xq08.ttf"));
                 FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
                 
-                parameter.size = 24; // Set font size . . .
+                parameter.size = 18; // Set font size . . .
                 parameter.color = Color.WHITE; // Set font color . . .
                 
                 font = generator.generateFont(parameter); // Generate the BitmapFont . . .
@@ -139,6 +139,15 @@ public class SpaceshipGame extends ApplicationAdapter {
                 
                 font.draw(batch, "Point: " + score, scoreBoardX, scoreBoardY); // Draw score board on bottom left side of screen . . .
                 
+                // Recursive method: Check to see if section is destroyed. If it is, add 1 to barricade score, otherwise,
+                // call function again to check other sections
+                for (int row = 0; row < numHeightBarricadeSections; row++)
+                {
+                    for (int col = 0; col < numWidthBarricadeSections; col++)
+                    {
+                         font.draw(batch, "Barricade Destroyed: " + calculateTotalScore(barricadeSectionsTwo, row, col), 340, 30);       
+                    }
+                }
                 
 		ship.Draw(batch);
                 
@@ -401,13 +410,47 @@ public class SpaceshipGame extends ApplicationAdapter {
                         // If creature bullet hits ship, then game ends . . .
                         if (creatures[count].spriteBullet.getBoundingRectangle().overlaps(ship.sprite.getBoundingRectangle()))
                         {
-                            Gdx.app.exit();
+                            // Exception handling: If bullet doesn't successfully kill player, throw an exception
+                            try
+                            {
+                                Gdx.app.exit();
+                            }
+                            catch (Exception e)
+                            {
+                                System.out.println("Error! Couldn't handle ship collision properly . . .");
+                            }
                         }
                     }
                 }
                 
 		batch.end();
 	}
+        
+        
+
+        private int calculateTotalScore(BarricadeSection[][] barricadeSections, int row, int col)
+        {
+            // Base case: If we've checked all sections, return 0
+            if (row >= barricadeSections.length || col >= barricadeSections[0].length)
+            {
+                return 0;
+            }
+
+            // Check if this section is destroyed
+            int score = barricadeSections[row][col].isNotDestroyed ? 0 : 1;
+
+            // Move to the next section
+            int nextRow = row;
+            int nextCol = col + 1;
+            if (nextCol >= barricadeSections[0].length)
+            {
+                nextRow++;
+                nextCol = 0;
+            }
+
+            // Recursive call to calculate score of remaining sections
+            return score + calculateTotalScore(barricadeSections, nextRow, nextCol);
+        }
 	
 	@Override
 	public void dispose() {
